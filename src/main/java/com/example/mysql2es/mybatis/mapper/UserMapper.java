@@ -3,8 +3,11 @@ package com.example.mysql2es.mybatis.mapper;
 import com.example.mysql2es.mybatis.model.SysRole;
 import com.example.mysql2es.mybatis.model.SysRoleExtends;
 import com.example.mysql2es.mybatis.model.SysUser;
+import org.apache.ibatis.annotations.Param;
+import org.apache.tomcat.util.net.SSLUtil;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: admin
@@ -53,7 +56,7 @@ public interface UserMapper {
      * @param sysUser
      * @return
      */
-    int insert2(SysUser sysUser);
+    int insert2(@Param("sysUser") SysUser sysUser);
 
     /**
      * 新增用户3 - 使用selectKey获取自增主键
@@ -68,5 +71,63 @@ public interface UserMapper {
      * @return
      */
     int updateById(SysUser sysUser);
+
+    /**
+     * 根据enabled和用户id查询用户的所有角色
+     * @param userId
+     * @param enabled
+     * @return
+     */
+    List<SysRole> selectRolesByIdAndEnable(@Param("userId") Long userId, @Param("enabled") Integer enabled);
+
+    /**
+     * 根据enabled和用户id查询用户的所有角色
+     * @param sysUser
+     * @param sysRole
+     * @return
+     */
+    List<SysRole> selectRolesByIdAndEnable2(SysUser sysUser,SysRole sysRole);
+
+    /**
+     * 根据id集合查询用户-参数是list集合
+     * @param idList
+     * @return
+     */
+    List<SysUser> selectUsersByIdlist(@Param("myList") List<Long> idList);
+
+    /**
+     * 根据id集合查询用户-参数是数组
+     * @param idList
+     * @return
+     */
+    List<SysUser> selectUsersByIdlist2(@Param("myArray") Long[] idList);
+
+    /**
+     * 批量新增用户
+     * @param userList
+     * @return
+     */
+    int insertUserBatch(List<SysUser> userList);
+
+    /**
+     * 通过map更新列
+     * @param map
+     * @return
+     */
+    int updateByMap(Map<String, Object> map);
+
+    /**
+     * 在where中使用if
+     * @param sysUser
+     * @return
+     */
+    List<SysUser> selectUserByIf1(SysUser sysUser);
+
+    /**
+     * 根据主键更新
+     * @param sysUser
+     * @return
+     */
+    int updateByIdSelective(SysUser sysUser);
 
 }

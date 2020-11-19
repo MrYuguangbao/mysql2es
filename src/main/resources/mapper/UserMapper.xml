@@ -62,15 +62,23 @@
     </select>
 
     <insert id="insert">
-        insert into sys_user(id,user_name,user_password,user_email,user_info,head_img,create_time,update_time)
+        insert into sys_user(id,user_name,user_password,user_email,
+        user_info,head_img,create_time,update_time)
         values(#{id},#{userName},#{userPassword},#{userEmail},#{userInfo},#{headImg,jdbcType=BLOB}
         ,#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
     </insert>
 
     <insert id="insert2" useGeneratedKeys="true" keyProperty="id">
-        insert into sys_user(user_name,user_password,user_email,user_info,head_img,create_time,update_time)
-        values(#{userName},#{userPassword},#{userEmail},#{userInfo},#{headImg,jdbcType=BLOB}
-        ,#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
+        insert into sys_user(user_name,user_password,
+        <if test="sysUser.userEmail != null and sysUser.userEmail != ''">
+            user_email,
+        </if>
+        user_info,head_img,create_time,update_time)
+        values(#{sysUser.userName},#{sysUser.userPassword},
+        <if test="sysUser.userEmail != null and sysUser.userEmail != ''">
+            #{sysUser.userEmail},
+        </if>
+        #{sysUser.userInfo},#{sysUser.headImg,jdbcType=BLOB},#{sysUser.createTime,jdbcType=TIMESTAMP},#{sysUser.updateTime,jdbcType=TIMESTAMP})
     </insert>
 
     <insert id="insert3" useGeneratedKeys="true" keyProperty="id">
@@ -93,5 +101,136 @@
             update_time = #{updateTime, jdbcType=TIMESTAMP}
         where id = #{id}
     </update>
+
+    <select id="selectRolesByIdAndEnable" resultType="com.example.mysql2es.mybatis.model.SysRole">
+        select
+         sr.id,
+         sr.role_name,
+         sr.enabled,
+         sr.create_by,
+         sr.create_time,
+         sr.update_time
+        from sys_user su
+        inner join sys_user_role sur on su.id = sur.user_id
+        inner join sys_role sr on sur.role_id = sr.id
+        where su.id = #{userId} and sr.enabled = #{enabled}
+    </select>
+
+    <select id="selectRolesByIdAndEnable2" resultType="com.example.mysql2es.mybatis.model.SysRole">
+        select
+         sr.id,
+         sr.role_name,
+         sr.enabled,
+         sr.create_by,
+         sr.create_time,
+         sr.update_time
+        from sys_user su
+        inner join sys_user_role sur on su.id = sur.user_id
+        inner join sys_role sr on sur.role_id = sr.id
+        where su.id = #{sysUser.id} and sr.enabled = #{sysRole.enabled}
+    </select>
+
+    <select id="selectUsersByIdlist" resultType="com.example.mysql2es.mybatis.model.SysUser">
+        select
+         id,
+         user_name,
+         user_password,
+         user_email,
+         user_info,
+         head_img,
+         create_time,
+         update_time
+        from sys_user
+        where id in
+        <foreach collection="myList" open="(" close=")" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectUsersByIdlist2" resultType="com.example.mysql2es.mybatis.model.SysUser">
+        select
+        id,
+        user_name,
+        user_password,
+        user_email,
+        user_info,
+        head_img,
+        create_time,
+        update_time
+        from sys_user
+        where id in
+        <foreach collection="myArray" open="(" close=")" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertUserBatch" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user(user_name, user_password, user_email, user_info, head_img, create_time, update_time)
+        values
+        <foreach collection="list" separator="," item="user">
+            (#{user.userName}, #{user.userPassword}, #{user.userEmail},
+            #{user.userInfo}, #{user.headImg, jdbcType=BLOB},
+            #{user.createTime, jdbcType=TIMESTAMP}, #{user.updateTime, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateByMap">
+        update sys_user
+        set
+        <foreach collection="_parameter" item="val" index="key" separator=",">
+            ${key} = #{val}
+        </foreach>
+        where id = #{id}
+    </update>
+
+    <select id="selectUserByIf1" resultType="com.example.mysql2es.mybatis.model.SysUser">
+        select
+        id,
+        user_name,
+        user_password,
+        user_email,
+        user_info,
+        head_img,
+        create_time,
+        update_time
+        from sys_user
+        where 1 = 1
+        <if test="userName != null and userName != ''">
+            and user_name like concat('%', #{userName}, '%')
+        </if>
+        <if test="userEmail != null and userEmail != ''">
+            and user_email = #{userEmail}
+        </if>
+    </select>
+
+    <update id="updateByIdSelective">
+        update sys_user
+        set
+        <if test="userName != null and userName != ''">
+            user_name = #{userName},
+        </if>
+        <if test="userPassword != null and userPassword != ''">
+            user_password = #{userPassword},
+        </if>
+        <if test="userEmail != null and userEmail != ''">
+            user_email = #{userEmail},
+        </if>
+        <if test="userInfo != null and userInfo != ''">
+            user_info = #{userInfo},
+        </if>
+        <if test="headImg != null">
+            head_img = #{headImg, jdbcType=BLOB},
+        </if>
+        <if test="createTime != null">
+            create_time = #{createTime, jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateTime != null">
+            update_time = #{updateTime, jdbcType=TIMESTAMP}
+        </if>
+        id = #{id}
+        where id = #{id}
+    </update>
+
+
 
 </mapper>
