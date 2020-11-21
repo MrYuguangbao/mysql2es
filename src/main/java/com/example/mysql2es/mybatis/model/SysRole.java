@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Author: admin
@@ -18,10 +19,17 @@ public class SysRole {
 
     private Long id;
     private String roleName;
-    private Integer enabled;
-    private Long createBy;
-    private LocalDateTime createTime;
+    private Enabled enabled;
+    //private Integer enabled;
+    // 使用CreateInfo代替存储
+    /*private Long createBy;
+    private LocalDateTime createTime;*/
+    private CreateInfo createInfo;
     private LocalDateTime updateTime;
 
+    /**
+     * 角色的权限集合
+     */
+    private List<SysPrivilege> privilegeList;
 
 }

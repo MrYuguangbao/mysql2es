@@ -1,0 +1,38 @@
+package com.example.mysql2es.mybatis.test;
+
+import com.example.mysql2es.mybatis.mapper.PrivilegeMapper;
+import com.example.mysql2es.mybatis.mapper.RoleMapper;
+import com.example.mysql2es.mybatis.model.SysPrivilege;
+import com.example.mysql2es.mybatis.model.SysRole;
+import org.apache.ibatis.session.SqlSession;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.time.LocalDateTime;
+
+/**
+ * @Author: admin
+ * @Description: provider注解测试
+ * @BelongsProject: mysql2es
+ * @BelongsPackage: com.example.mysql2es.mybatis.test
+ * @CreateTime: 2020-11-20 19:12:40
+ */
+public class PrivilegeMapperTest extends BaseMapperTest {
+
+    @Test
+    public void testSelectById() {
+        SqlSession sqlSession = getSqlsession();
+        try {
+            PrivilegeMapper mapper = sqlSession.getMapper(PrivilegeMapper.class);
+            SysPrivilege sysPrivilege = mapper.selectById(1L);
+            System.out.println(sysPrivilege);
+            Assert.assertNotNull(sysPrivilege);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.rollback();
+            sqlSession.close();
+        }
+    }
+
+}

@@ -130,4 +130,20 @@ public interface UserMapper {
      */
     int updateByIdSelective(SysUser sysUser);
 
+    SysUser selectByIdOrUserName(SysUser sysUser);
+
+    SysUser selectByIdOrUserName1(SysUser sysUser);
+
+    SysUser selectUserAndRoleById(Long id);
+
+    SysUser selectUserAndRoleById2(Long id);
+
+    SysUser selectUserAndRoleById3(Long id);
+
+    SysUser selectUserAndRoleByIdSelect(Long id);
+
+    List<SysUser> selectAllUserAndRoles();
+
+    SysUser selectAllUserAndRoleSelect(Long id);
+
 }

@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: admin
@@ -27,5 +28,14 @@ public class SysUser {
     private byte[] headImg;
     private Date createTime;
     private Date updateTime;
+
+    /**
+     * 嵌套查询 一对一映射
+     */
+    private SysRole role;
+    /**
+     * 嵌套查询 一对多映射
+     */
+    private List<SysRole> roleList;
 
 }
