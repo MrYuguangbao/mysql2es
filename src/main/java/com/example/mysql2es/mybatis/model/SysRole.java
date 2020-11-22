@@ -3,6 +3,7 @@ package com.example.mysql2es.mybatis.model;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,8 +16,8 @@ import java.util.List;
  */
 @Data
 @ToString
-public class SysRole {
-
+public class SysRole implements Serializable {
+    private static final long serialVersionUID = -5113191526729728151L;
     private Long id;
     private String roleName;
     private Enabled enabled;

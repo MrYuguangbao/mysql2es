@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class RoleMapperTest extends BaseMapperTest {
 
-    @Test
+    /*@Test
     public void testSelectById() {
         SqlSession sqlSession = getSqlsession();
         try {
@@ -38,7 +38,7 @@ public class RoleMapperTest extends BaseMapperTest {
         } finally {
             sqlSession.close();
         }
-    }
+    }*/
 
     @Test
     public void testSelectAll() {
@@ -145,4 +145,39 @@ public class RoleMapperTest extends BaseMapperTest {
         }
     }
 
+
+    @Test
+    public void testL2Cache() {
+        SqlSession sqlSession = getSqlsession();
+        SysRole role1 = null;
+        try {
+            RoleMapper mapper = sqlSession.getMapper(RoleMapper.class);
+            role1 = mapper.selectRoleById(1L);
+            role1.setRoleName("new rolename");
+            SysRole role2 = mapper.selectRoleById(1L);
+            Assert.assertEquals("new rolename", role2.getRoleName());
+            Assert.assertEquals(role1, role2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+
+        System.out.println("---开启新的sqlsession");
+        sqlSession = getSqlsession();
+        try {
+            RoleMapper mapper = sqlSession.getMapper(RoleMapper.class);
+            SysRole role2 = mapper.selectRoleById(1L);
+            Assert.assertEquals("new rolename", role2.getRoleName());
+            Assert.assertEquals(role1, role2);
+            SysRole role3 = mapper.selectRoleById(1L);
+            Assert.assertEquals(role2, role3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+
+
+    }
 }

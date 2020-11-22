@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0 //EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mysql2es.mybatis.mapper.RoleMapper">
+    <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="false" />
 
     <resultMap id="roleMap" type="com.example.mysql2es.mybatis.model.SysRole">
         <id property="id" column="id"/>

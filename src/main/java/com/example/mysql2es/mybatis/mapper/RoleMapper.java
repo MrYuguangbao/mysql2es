@@ -2,6 +2,7 @@ package com.example.mysql2es.mybatis.mapper;
 
 import com.example.mysql2es.mybatis.model.SysRole;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.cache.decorators.FifoCache;
 
 import java.util.List;
 
@@ -12,8 +13,9 @@ import java.util.List;
  * @BelongsPackage: com.example.mysql2es.mybatis.mapper
  * @CreateTime: 2020-11-20 18:27:20
  */
+@CacheNamespaceRef(RoleMapper.class)
 public interface RoleMapper {
-    @Select({"select id,role_name,enabled,update_time",
+    @Select({"select id,role_name,enabled,create_by,create_time,update_time",
     "from sys_role",
     "where id = #{id}"})
     SysRole selectById(Long id);
@@ -59,7 +61,7 @@ public interface RoleMapper {
                 before = false)
     int insert3(SysRole sysRole);
 
-    @Update("update sys_role set enabled = #{enabled} where id = #{id}")
+    @Update("update sys_role set role_name = #{roleName} where id = #{id}")
     int updateById(SysRole sysRole);
 
 }

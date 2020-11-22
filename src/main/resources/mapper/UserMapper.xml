@@ -3,6 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mysql2es.mybatis.mapper.UserMapper">
 
+    <cache-ref namespace="com.example.mysql2es.mybatis.mapper.RoleMapper" />
+
     <resultMap id="userMap" type="com.example.mysql2es.mybatis.model.SysUser">
         <id property="id" column="id" />
         <result property="userName" column="user_name" />
@@ -461,7 +463,8 @@
          sr.role_name "role.roleName",
          sr.enabled "role.enabled",
          sr.create_by "role.createBy",
-         sr.create_time "role.createTime"
+         sr.create_time "role.createTime",
+         sr.update_time "role.updateTime"
         from sys_user su
         inner join sys_user_role sur on su.id = sur.user_id
         inner join sys_role sr on sur.role_id = sr.id

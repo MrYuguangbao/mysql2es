@@ -3,6 +3,7 @@ package com.example.mysql2es.mybatis.mapper;
 import com.example.mysql2es.mybatis.model.SysRole;
 import com.example.mysql2es.mybatis.model.SysRoleExtends;
 import com.example.mysql2es.mybatis.model.SysUser;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.tomcat.util.net.SSLUtil;
 
@@ -145,5 +146,8 @@ public interface UserMapper {
     List<SysUser> selectAllUserAndRoles();
 
     SysUser selectAllUserAndRoleSelect(Long id);
+
+    @Delete("delete from sys_user where id = #{id}")
+    int deleteById(Long id);
 
 }

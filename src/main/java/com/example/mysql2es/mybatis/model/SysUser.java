@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +19,9 @@ import java.util.List;
  */
 @Data
 @ToString
-public class SysUser {
+public class SysUser implements Serializable {
 
+    private static final long serialVersionUID = 3172480234149932846L;
     private Long id;
     private String userName;
     private String userPassword;

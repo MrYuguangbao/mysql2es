@@ -3,6 +3,7 @@ package com.example.mysql2es.mybatis.model;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,8 +15,9 @@ import java.util.Date;
  */
 @Data
 @ToString
-public class CreateInfo {
+public class CreateInfo implements Serializable {
 
+    private static final long serialVersionUID = 5352292228353517989L;
     private String createBy;
     private Date createTime;
 

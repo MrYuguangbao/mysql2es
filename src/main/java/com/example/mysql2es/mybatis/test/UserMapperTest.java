@@ -1,5 +1,6 @@
 package com.example.mysql2es.mybatis.test;
 
+import com.example.mysql2es.mybatis.mapper.RoleMapper;
 import com.example.mysql2es.mybatis.mapper.UserMapper;
 import com.example.mysql2es.mybatis.model.SysPrivilege;
 import com.example.mysql2es.mybatis.model.SysRole;
@@ -7,6 +8,7 @@ import com.example.mysql2es.mybatis.model.SysRoleExtends;
 import com.example.mysql2es.mybatis.model.SysUser;
 import com.example.mysql2es.mybatis.proxy.MyMapperProxy;
 import com.mysql.cj.jdbc.DatabaseMetaData;
+import org.apache.ibatis.reflection.Jdk;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -464,5 +466,58 @@ public class UserMapperTest extends BaseMapperTest{
         }
     }
 
+    @Test
+    public void testDirtyData(){
+        SqlSession sqlSession = getSqlsession();
+        try {
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            SysUser sysUser = mapper.selectUserAndRoleById(1001L);
+            Assert.assertEquals("普通用户", sysUser.getRole().getRoleName());
+            System.out.println("角色名："+sysUser.getRole().getRoleName());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+
+        sqlSession = getSqlsession();
+        try {
+            RoleMapper mapper = sqlSession.getMapper(RoleMapper.class);
+            SysRole sysRole = mapper.selectById(2L);
+            sysRole.setRoleName("脏数据");
+            mapper.updateById(sysRole);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+
+        sqlSession = getSqlsession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+            SysUser sysUser = userMapper.selectUserAndRoleById(1001L);
+            SysRole sysRole = roleMapper.selectById(2L);
+
+            Assert.assertEquals("普通用户", sysUser.getRole().getRoleName());
+            Assert.assertEquals("脏数据", sysRole.getRoleName());
+            System.out.println("角色名：" + sysUser.getRole().getRoleName());
+
+            sysRole.setRoleName("普通用户");
+            roleMapper.updateById(sysRole);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testJDKLevel(){
+        System.out.println(Jdk.parameterExists);
+    }
 
 }
