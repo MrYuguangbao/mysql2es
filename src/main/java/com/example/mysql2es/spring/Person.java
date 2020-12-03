@@ -1,5 +1,7 @@
 package com.example.mysql2es.spring;
 
+import java.util.Locale;
+
 /**
  * @Author: admin
  * @Description: 实体类
@@ -36,8 +38,4 @@ public class Person {
                 '}';
     }
 
-    public static void main(String[] args) {
-        System.getenv().forEach((k, v) -> System.out.println(k+":"+v));
-
-    }
 }
