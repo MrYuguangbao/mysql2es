@@ -21,8 +21,8 @@ public class FaceRecognitionController {
     @PostMapping(value = "/face/recognition")
     public String handle(@RequestParam("code")String code) {
         String base64 = code.replace("data:image/png;base64,","");
-        AipFace client = new AipFace("23090574", "YtOISugcXcI5BctsEfVecsxL",
-                "R4UGXlK9m7TX42gybQv5RsPS52Rq4tiB");
+        AipFace client = new AipFace(FaceSystemConstants.APP_ID, FaceSystemConstants.API_KEY,
+                FaceSystemConstants.SECRET_KEY);
         JSONObject result = client.detect(base64, "BASE64", null);
         return result.toString(2);
     }
