@@ -159,7 +159,6 @@
     <orderEntry type="library" name="Maven: com.alibaba.csp:sentinel-cluster-client-default:1.8.0" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba.cloud:spring-cloud-alibaba-sentinel-datasource:2.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.baidu.aip:java-sdk:4.15.1" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.30" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:23.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
     <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.0.18" level="project" />
