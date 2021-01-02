@@ -2,6 +2,7 @@ package com.example.mysql2es.mybatis.test;
 
 import com.example.mysql2es.mybatis.mapper.RoleMapper;
 import com.example.mysql2es.mybatis.mapper.UserMapper;
+import com.example.mysql2es.mybatis.mapper.UsertestMapper;
 import com.example.mysql2es.mybatis.model.*;
 import com.example.mysql2es.mybatis.proxy.MyMapperProxy;
 import org.apache.ibatis.reflection.Jdk;
@@ -626,6 +627,45 @@ public class UserMapperTest extends BaseMapperTest{
     @Test
     public void testJDKLevel(){
         System.out.println(Jdk.parameterExists);
+    }
+
+    @Test
+    public void testExample() {
+        SqlSession sqlSession = getSqlsession();
+        try {
+            UsertestMapper mapper = sqlSession.getMapper(UsertestMapper.class);
+            UsertestExample example = new UsertestExample();
+
+            // 测试selectExample
+            /*example.setOrderByClause("id desc");
+            example.setDistinct(true);
+            UsertestExample.Criteria criteria = example.createCriteria();
+            criteria.andIdGreaterThanOrEqualTo(1L);
+            criteria.andIdLessThan(3L);
+            UsertestExample.Criteria or = example.or();
+            or.andNameEqualTo("Yekok");
+
+            List<Usertest> usertests = mapper.selectByExample(example);*/
+
+            // 测试updateByExampleSelective
+            /*UsertestExample.Criteria criteria = example.createCriteria();
+            criteria.andIdGreaterThan(2L);
+
+            Usertest model = new Usertest();
+            model.setName("MBG update");
+            mapper.updateByExampleSelective(model, example);*/
+
+            // 测试deleteByExample
+            UsertestExample.Criteria criteria = example.createCriteria();
+            criteria.andIdGreaterThan(2L);
+            mapper.deleteByExample(example);
+            System.out.println(mapper.countByExample(example));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
     }
 
 }

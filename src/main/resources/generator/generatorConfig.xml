@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="MySqlContext" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="beginningDelimiter" value="`" />
+        <property name="endingDelimiter" value="`"/>
+<!--        注释生成器-->
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+<!--        要连接的数据源信息-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/mybatis_plus?serverTimezone=UTC"
+                        userId="root"
+                        password="yuguangbao">
+        </jdbcConnection>
+<!--        配置生成的model包名-->
+        <javaModelGenerator targetPackage="com.example.mysql2es.mybatis.model" targetProject="src\main\java">
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+<!--        配置生成的Mapper.xml文件-->
+        <sqlMapGenerator targetPackage="com.example.mysql2es.mybatis.xml" targetProject="src\main\resources\mapper" />
+<!--        配置生成Mapper接口的位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.mysql2es.mybatis.mapper" targetProject="src\main\java" />
+        <table tableName="usertest">
+            <generatedKey column="id" sqlStatement="MySql"/>
+        </table>
+    </context>
+
+</generatorConfiguration>
