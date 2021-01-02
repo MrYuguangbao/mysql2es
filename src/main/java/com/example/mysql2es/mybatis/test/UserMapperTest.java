@@ -2,20 +2,16 @@ package com.example.mysql2es.mybatis.test;
 
 import com.example.mysql2es.mybatis.mapper.RoleMapper;
 import com.example.mysql2es.mybatis.mapper.UserMapper;
-import com.example.mysql2es.mybatis.model.SysPrivilege;
-import com.example.mysql2es.mybatis.model.SysRole;
-import com.example.mysql2es.mybatis.model.SysRoleExtends;
-import com.example.mysql2es.mybatis.model.SysUser;
+import com.example.mysql2es.mybatis.model.*;
 import com.example.mysql2es.mybatis.proxy.MyMapperProxy;
-import com.mysql.cj.jdbc.DatabaseMetaData;
 import org.apache.ibatis.reflection.Jdk;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.type.TypeHandler;
+import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.reflect.Proxy;
-import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -29,6 +25,24 @@ import java.util.*;
 public class UserMapperTest extends BaseMapperTest{
 
     @Test
+    public void myTest() {
+        SqlSession sqlSession = getSqlsession();
+        try {
+            TypeHandlerRegistry registry = sqlSession.getConfiguration().getTypeHandlerRegistry();
+            Collection<TypeHandler<?>> typeHandlers = registry.getTypeHandlers();
+            System.out.println("typehandlers size:" + typeHandlers.size());
+            for (TypeHandler<?> typeHandler : typeHandlers) {
+                System.out.println(typeHandler.getClass().getName());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+
+    }
+
+    @Test
     public void testSelectById() {
         SqlSession sqlSession = getSqlsession();
         try {
@@ -36,6 +50,7 @@ public class UserMapperTest extends BaseMapperTest{
             SysUser sysUser = mapper.selectById(1L);
             Assert.assertNotNull(sysUser);
             Assert.assertEquals("admin", sysUser.getUserName());
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -95,10 +110,10 @@ public class UserMapperTest extends BaseMapperTest{
         try {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
             SysUser user = new SysUser();
-            user.setUserName("usertest");
-            user.setUserPassword("passtest");
-            user.setUserEmail("email@mybatis.org");
-            user.setUserInfo("infotest");
+            user.setUserName("usertest20210101");
+            user.setUserPassword("passtest20210101");
+            user.setUserEmail("email20210101@mybatis.org");
+            user.setUserInfo("infotest20210101");
             user.setHeadImg(new byte[]{1, 2, 3});
             user.setCreateTime(new Date());
             user.setUpdateTime(new Date());
@@ -108,7 +123,9 @@ public class UserMapperTest extends BaseMapperTest{
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            sqlSession.rollback();
+            //sqlSession.rollback();
+            // 默认不自动提交
+            //sqlSession.commit();
             sqlSession.close();
         }
     }
@@ -121,11 +138,11 @@ public class UserMapperTest extends BaseMapperTest{
             SysUser user = new SysUser();
             user.setUserName("usertest1");
             user.setUserPassword("passtest1");
+            user.setUserEmail("testemail");
             user.setUserInfo("infotest1");
             user.setHeadImg(new byte[]{1, 2, 3});
             user.setCreateTime(new Date());
             user.setUpdateTime(new Date());
-            // TODO 不能新增到数据库
             int insert = mapper.insert2(user);
             Assert.assertEquals(1, insert);
             System.out.println("新增返回的主键是:"+user.getId());
@@ -135,7 +152,8 @@ public class UserMapperTest extends BaseMapperTest{
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            sqlSession.rollback();
+            //sqlSession.rollback();
+            //sqlSession.commit();
             sqlSession.close();
         }
     }
@@ -160,7 +178,8 @@ public class UserMapperTest extends BaseMapperTest{
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            sqlSession.rollback();
+            //sqlSession.rollback();
+            sqlSession.commit();
             sqlSession.close();
         }
     }
@@ -202,7 +221,7 @@ public class UserMapperTest extends BaseMapperTest{
         }
     }
 
-    /*@Test
+    @Test
     public void testSelectRolesByIdAndEnable2(){
         SqlSession sqlSession = getSqlsession();
         try {
@@ -210,17 +229,34 @@ public class UserMapperTest extends BaseMapperTest{
             SysUser sysUser = new SysUser();
             sysUser.setId(1L);
             SysRole sysRole = new SysRole();
-            sysRole.setEnabled(1);
+            sysRole.setEnabled(Enabled.enabled);
 
             List<SysRole> sysRoles = mapper.selectRolesByIdAndEnable2(sysUser, sysRole);
-            Assert.assertNotNull(sysRoles);
-            Assert.assertTrue(sysRoles.size() > 0);
+            for (SysRole role : sysRoles) {
+                System.out.println(role);
+            }
+            //Assert.assertNotNull(sysRoles);
+            //Assert.assertTrue(sysRoles.size() > 0);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             sqlSession.close();
         }
-    }*/
+    }
+
+    @Test
+    public void testASelectAll2(){
+        SqlSession sqlSession = getSqlsession();
+        try {
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            List<SysUser> sysUsers = mapper.selectAll2();
+            //Assert.assertTrue(sysRoles.size() > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
 
 
     @Test
@@ -266,7 +302,7 @@ public class UserMapperTest extends BaseMapperTest{
                 user.setUserEmail("test@mybatis.org");
                 userList.add(user);
             }
-            int insertResult = mapper.insertUserBatch(userList);
+            int insertResult = mapper.insetMulti(userList);
             System.out.println("批量新增完成之后，返回自增主键值");
             for (SysUser user : userList) {
                 System.out.println(user.getId());
@@ -287,9 +323,9 @@ public class UserMapperTest extends BaseMapperTest{
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
             Map<String, Object> map = new HashMap<>();
             map.put("id", 1L);
-            map.put("user_email", "update@mybatis.org");
-            map.put("user_password", "mybatis");
-            int updateResult = mapper.updateByMap(map);
+            map.put("user_email", "updateforeach@mybatis.org");
+            map.put("user_password", "mybatisforeach");
+            int updateResult = mapper.updateForeach(map);
             Assert.assertEquals(1, updateResult);
 
             SysUser user = mapper.selectById(1L);
@@ -331,9 +367,9 @@ public class UserMapperTest extends BaseMapperTest{
             System.out.println("只根据用户名查询");
             query.setUserName("ad");
             List<SysUser> sysUsers = mapper.selectUserByIf1(query);
-            Assert.assertTrue(sysUsers.size() > 0);
+            //Assert.assertTrue(sysUsers.size() > 0);
 
-            query = new SysUser();
+            /*query = new SysUser();
             System.out.println("只根据email查询");
             query.setUserEmail("admin@mybatis.com");
             sysUsers = mapper.selectUserByIf1(query);
@@ -343,7 +379,7 @@ public class UserMapperTest extends BaseMapperTest{
             query.setUserName("ad");
             query.setUserEmail("test@mybatis.com");
             sysUsers = mapper.selectUserByIf1(query);
-            Assert.assertTrue(sysUsers.size() == 0);
+            Assert.assertTrue(sysUsers.size() == 0);*/
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -379,10 +415,66 @@ public class UserMapperTest extends BaseMapperTest{
         try {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
             SysUser param = new SysUser();
-            param.setUserEmail("test@mybatis.com");
-            SysUser sysUser = mapper.selectByIdOrUserName1(param);
-            Assert.assertNotNull(sysUser);
+            param.setId(1L);
+            param.setUserName("test@mybatis.com");
+            System.out.println("根据id查询");
+            mapper.selectByIdOrUserName(param);
 
+            System.out.println("根据name查询");
+            param.setId(null);
+            mapper.selectByIdOrUserName(param);
+
+            param.setUserName(null);
+            mapper.selectByIdOrUserName(param);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectByWhere(){
+        SqlSession sqlSession = getSqlsession();
+        try {
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            SysUser user = new SysUser();
+            user.setUserName("ddd");
+            user.setUserEmail("eee");
+            mapper.selectByWhere(user);
+
+            System.out.println("userName为null");
+            user.setUserName(null);
+            mapper.selectByWhere(user);
+
+            System.out.println("userEmail为null");
+            user.setUserEmail(null);
+            mapper.selectByWhere(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testUpdateBySet(){
+        SqlSession sqlSession = getSqlsession();
+        try {
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            SysUser user = new SysUser();
+            user.setUserName("ddd");
+            user.setUserEmail("eee");
+            mapper.updateBySet(user);
+
+            System.out.println("userName为null");
+            user.setUserName(null);
+            mapper.updateBySet(user);
+
+            System.out.println("userEmail为null");
+            user.setUserEmail(null);
+            mapper.updateBySet(user);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -404,6 +496,22 @@ public class UserMapperTest extends BaseMapperTest{
             sqlSession.close();
         }
     }
+
+    @Test
+    public void testSelectByForeach(){
+        SqlSession sqlSession = getSqlsession();
+        try {
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            List<Long> integers = Arrays.asList(1L, 2L, 3L);
+            List<SysUser> sysUsers = mapper.selectByForeach(integers);
+            System.out.println(sysUsers.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
 
     @Test
     public void testSelectUserAndRoleByIdSelect(){

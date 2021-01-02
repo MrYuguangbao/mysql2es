@@ -1,5 +1,9 @@
 package com.example.mysql2es.facerecognition;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootVersion;
+import org.springframework.core.SpringVersion;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -40,6 +44,11 @@ public class Base64Utils {
             }
         }
         return builder.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(SpringVersion.getVersion());
+        System.out.println(SpringBootVersion.getVersion());
     }
 
 }

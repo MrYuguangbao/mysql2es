@@ -12,6 +12,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.jmx.export.annotation.AnnotationMBeanExporter;
 
 @SpringBootApplication
+
 public class Mysql2esApplication {
 
     public static void main(String[] args) {

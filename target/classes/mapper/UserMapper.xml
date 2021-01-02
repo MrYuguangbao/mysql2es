@@ -366,7 +366,8 @@
         from sys_user
         where 1 = 1
         <if test="userName != null and userName != ''">
-            and user_name like concat('%', #{userName}, '%')
+            <bind name="userNameLike" value="'%'+userName+'%'"/>
+            and user_name like #{userName}
         </if>
         <if test="userEmail != null and userEmail != ''">
             and user_email = #{userEmail}
@@ -401,6 +402,38 @@
         where id = #{id}
     </update>
 
+    <update id="updateBySet">
+        update sys_user
+        <set>
+        <!--<if test="userName != null and userName != ''">
+            user_name = #{userName},
+        </if>-->
+        <if test="userName != null and userName != ''">
+            user_name = #{userName},
+        </if>
+        <if test="userPassword != null and userPassword != ''">
+            user_password = #{userPassword},
+        </if>
+        <if test="userEmail != null and userEmail != ''">
+            user_email = #{userEmail},
+        </if>
+        <if test="userInfo != null and userInfo != ''">
+            user_info = #{userInfo},
+        </if>
+        <if test="headImg != null">
+            head_img = #{headImg, jdbcType=BLOB},
+        </if>
+        <if test="createTime != null">
+            create_time = #{createTime, jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateTime != null">
+            update_time = #{updateTime, jdbcType=TIMESTAMP},
+        </if>
+        id = #{id},
+        </set>
+        where id = #{id}
+    </update>
+
     <select id="selectByIdOrUserName" resultType="com.example.mysql2es.mybatis.model.SysUser">
         select
             id,
@@ -425,6 +458,19 @@
             </otherwise>
         </choose>
 
+    </select>
+
+    <select id="selectByWhere" resultType="com.example.mysql2es.mybatis.model.SysUser">
+        select <include refid="userColumn" />
+        from sys_user
+        <where>
+            <if test="userName != null and userName != ''">
+                and user_name like concat('%', #{userName}, '%')
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                and user_email = #{userEmail}
+            </if>
+        </where>
     </select>
 
     <select id="selectByIdOrUserName1" resultType="com.example.mysql2es.mybatis.model.SysUser">
@@ -470,5 +516,33 @@
         inner join sys_role sr on sur.role_id = sr.id
         where su.id = #{id}
     </select>
+
+    <select id="selectByForeach" resultType="com.example.mysql2es.mybatis.model.SysUser">
+        select <include refid="userColumn"/>
+        from sys_user
+        where id in
+        <foreach collection="idList" open="(" close=")" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insetMulti" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user(user_name, user_password, user_email, user_info, head_img, create_time, update_time)
+        values
+        <foreach collection="list" item="user" separator=",">
+            (#{user.userName}, #{user.userPassword}, #{user.userEmail},
+            #{user.userInfo}, #{user.headImg, jdbcType=BLOB},
+            #{user.createTime, jdbcType=TIMESTAMP}, #{user.updateTime, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateForeach">
+        update sys_user
+        set
+        <foreach collection="_parameter" item="val" index="key" separator=",">
+            ${key} = #{val}
+        </foreach>
+        where id = #{id}
+    </update>
 
 </mapper>

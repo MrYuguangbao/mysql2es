@@ -3,8 +3,7 @@ package com.example.mysql2es.mybatis.mapper;
 import com.example.mysql2es.mybatis.model.SysRole;
 import com.example.mysql2es.mybatis.model.SysRoleExtends;
 import com.example.mysql2es.mybatis.model.SysUser;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 import org.apache.tomcat.util.net.SSLUtil;
 
 import java.util.List;
@@ -18,6 +17,7 @@ import java.util.Map;
  * @CreateTime: 2020-11-18 19:36:21
  */
 public interface UserMapper {
+
     /**
      * 通过ID查询用户
      * @param id
@@ -131,7 +131,7 @@ public interface UserMapper {
      */
     int updateByIdSelective(SysUser sysUser);
 
-    SysUser selectByIdOrUserName(SysUser sysUser);
+    void selectByIdOrUserName(SysUser sysUser);
 
     SysUser selectByIdOrUserName1(SysUser sysUser);
 
@@ -149,5 +149,35 @@ public interface UserMapper {
 
     @Delete("delete from sys_user where id = #{id}")
     int deleteById(Long id);
+
+
+
+    @Results(id = "userResultMap1", value = {
+            @Result(property = "id", column = "id", id = true),
+            @Result(property = "userName", column = "user_name"),
+            @Result(property = "userPassword", column = "user_password"),
+            @Result(property = "userEmail", column = "user_email"),
+            @Result(property = "userInfo", column = "user_info"),
+            @Result(property = "headImg", column = "head_img"),
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "updateTime", column = "update_time")
+    })
+    @Select("select * from sys_user")
+    List<SysUser> selectAll2();
+
+    List<SysUser> selectByWhere(SysUser sysUser);
+
+    int updateBySet(SysUser sysUser);
+
+    /**
+     * 使用foreach标签的时候：1.collection默认值是list或array;2.亦可通过@Param注解指定名称(推荐)
+     * @param idList
+     * @return
+     */
+    List<SysUser> selectByForeach(@Param("idList") List<Long> idList);
+
+    int insetMulti(List<SysUser> userList);
+
+    int updateForeach(Map<String, Object> map);
 
 }

@@ -35,6 +35,7 @@
          <mapper resource="mapper/UserMapper.xml" />
          <mapper resource="mapper/RoleMapper.xml" />
          <mapper resource="mapper/PrivilegeMapper.xml" />
+         <mapper resource="mapper/UsertestMapper.xml"/>
         <!-- 注解定义 -->
 <!--        <package name="com.example.mysql2es.mybatis.mapper" />-->
     </mappers>

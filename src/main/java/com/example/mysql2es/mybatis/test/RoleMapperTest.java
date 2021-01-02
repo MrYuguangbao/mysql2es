@@ -56,16 +56,16 @@ public class RoleMapperTest extends BaseMapperTest {
         }
     }
 
-    /*@Test
+    @Test
     public void testInsert2() {
         SqlSession sqlSession = getSqlsession();
         try {
             RoleMapper mapper = sqlSession.getMapper(RoleMapper.class);
             SysRole sysRole = new SysRole();
             sysRole.setRoleName("testrolename");
-            sysRole.setEnabled(1);
-            sysRole.setCreateBy(1L);
-            sysRole.setCreateTime(LocalDateTime.now());
+            sysRole.setEnabled(Enabled.enabled);
+            /*sysRole.setCreateBy(1L);
+            sysRole.setCreateTime(LocalDateTime.now());*/
             sysRole.setUpdateTime(LocalDateTime.now());
             int insertCount = mapper.insert2(sysRole);
             Assert.assertEquals(1, insertCount);
@@ -73,10 +73,11 @@ public class RoleMapperTest extends BaseMapperTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            sqlSession.rollback();
+            //sqlSession.rollback();
+            sqlSession.commit();
             sqlSession.close();
         }
-    }*/
+    }
 
     /*@Test
     public void testInsert3() {
