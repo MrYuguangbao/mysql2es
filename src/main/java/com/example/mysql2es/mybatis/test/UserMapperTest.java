@@ -222,7 +222,7 @@ public class UserMapperTest extends BaseMapperTest{
         }
     }
 
-    @Test
+    /*@Test
     public void testSelectRolesByIdAndEnable2(){
         SqlSession sqlSession = getSqlsession();
         try {
@@ -243,7 +243,7 @@ public class UserMapperTest extends BaseMapperTest{
         } finally {
             sqlSession.close();
         }
-    }
+    }*/
 
     @Test
     public void testASelectAll2(){
@@ -489,8 +489,7 @@ public class UserMapperTest extends BaseMapperTest{
         try {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
             SysUser sysUser = mapper.selectUserAndRoleById3(1001L);
-            Assert.assertNotNull(sysUser);
-            System.out.println(sysUser.getRole());
+            System.out.println(sysUser);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -520,8 +519,8 @@ public class UserMapperTest extends BaseMapperTest{
         try {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
             SysUser sysUser = mapper.selectUserAndRoleByIdSelect(1001L);
-            System.out.println("调用sysUser.equals(null)");
-            sysUser.equals(null);
+            System.out.println("调用equals,clone,hashCode,toString方法");
+            System.out.println(sysUser.toString());
             Assert.assertNotNull(sysUser);
             System.out.println("调用sysUser.getRole()");
             Assert.assertNotNull(sysUser.getRole());

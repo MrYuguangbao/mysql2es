@@ -139,6 +139,10 @@ public interface UserMapper {
 
     SysUser selectUserAndRoleById2(Long id);
 
+    SysUser selectUserAndRoleByIdResultMap(Long id);
+
+    SysUser selectUserAndRoleByIdAssociation(Long id);
+
     SysUser selectUserAndRoleById3(Long id);
 
     SysUser selectUserAndRoleByIdSelect(Long id);

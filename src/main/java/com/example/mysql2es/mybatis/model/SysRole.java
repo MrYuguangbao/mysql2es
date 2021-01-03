@@ -20,13 +20,14 @@ public class SysRole implements Serializable {
     private static final long serialVersionUID = -5113191526729728151L;
     private Long id;
     private String roleName;
-    private Enabled enabled;
-    //private Integer enabled;
-    // 使用CreateInfo代替存储
-    /*private Long createBy;
-    private LocalDateTime createTime;*/
-    private CreateInfo createInfo;
+    private Integer enabled;
+    private Long createBy;
+    private LocalDateTime createTime;
     private LocalDateTime updateTime;
+
+    //private Enabled enabled;
+    // 使用CreateInfo代替存储
+    //private CreateInfo createInfo;
 
     /**
      * 角色的权限集合

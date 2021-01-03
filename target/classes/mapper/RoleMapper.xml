@@ -8,17 +8,21 @@
         <id property="id" column="id"/>
         <result property="roleName" column="role_name" />
         <result property="enabled" column="enabled" />
-        <!--<result property="createBy" column="create_by" />
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />-->
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
-        <association property="createInfo">
+        <!--<association property="createInfo">
             <result property="createBy" column="create_by" />
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        </association>
+        </association>-->
     </resultMap>
 
+    <select id="selectRoleById" resultMap="roleMap">
+        select * from sys_role where id = #{id}
+    </select>
+
     <!-- 角色权限映射 -->
-    <resultMap id="rolePrivilegeListMap" extends="roleMap"
+    <!--<resultMap id="rolePrivilegeListMap" extends="roleMap"
                type="com.example.mysql2es.mybatis.model.SysRole">
         <collection property="privilegeList" columnPrefix="privilege_"
                     resultMap="com.example.mysql2es.mybatis.mapper.PrivilegeMapper.privilegeMap"/>
@@ -30,13 +34,13 @@
                     fetchType="lazy"
                     column="{roleId=id}"
                     select="com.example.mysql2es.mybatis.mapper.PrivilegeMapper.selectPrivilegeByRoleId"/>
-    </resultMap>
+    </resultMap>-->
 
 <!--    鉴别器-->
-    <resultMap id="rolePrivilegeListMapChoose" type="com.example.mysql2es.mybatis.model.SysRole">
+    <!--<resultMap id="rolePrivilegeListMapChoose" type="com.example.mysql2es.mybatis.model.SysRole">
         <discriminator column="enabled" javaType="int">
             <case value="1" resultMap="rolePrivilegeListMapSelect" />
-            <!--<case value="0" resultMap="roleMap" />-->
+            &lt;!&ndash;<case value="0" resultMap="roleMap" />&ndash;&gt;
             <case value="0" resultType="com.example.mysql2es.mybatis.model.SysRole">
                 <id property="id" column="id" />
                 <result property="roleName" column="role_name" />
@@ -70,10 +74,6 @@
         where sur.user_id = #{userId}
     </select>
 
-    <select id="selectRoleById" resultMap="roleMap">
-        select * from sys_role where id = #{id}
-    </select>
-
     <select id="selectAllRoleAndPrivileges" resultMap="rolePrivilegeListMap">
         select
             sr.id,
@@ -88,7 +88,7 @@
         from sys_role sr
         inner join sys_role_privilege srp on srp.role_id = sr.id
         inner join sys_privilege sp on sp.id = srp.privilege_id
-    </select>
+    </select>-->
 
 
 </mapper>
