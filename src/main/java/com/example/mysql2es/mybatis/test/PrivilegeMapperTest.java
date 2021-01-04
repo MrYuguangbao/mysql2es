@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @Author: admin
@@ -27,6 +28,23 @@ public class PrivilegeMapperTest extends BaseMapperTest {
             SysPrivilege sysPrivilege = mapper.selectById(1L);
             System.out.println(sysPrivilege);
             Assert.assertNotNull(sysPrivilege);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.rollback();
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectPrivilegeByRoleId() {
+        SqlSession sqlSession = getSqlsession();
+        try {
+            PrivilegeMapper mapper = sqlSession.getMapper(PrivilegeMapper.class);
+            List<SysPrivilege> sysPrivilege = mapper.selectPrivilegeByRoleId(1L);
+            for (SysPrivilege privilege : sysPrivilege) {
+                System.out.println(privilege);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

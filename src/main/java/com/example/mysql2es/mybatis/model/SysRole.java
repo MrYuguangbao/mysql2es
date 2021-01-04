@@ -21,13 +21,13 @@ public class SysRole implements Serializable {
     private Long id;
     private String roleName;
     private Integer enabled;
-    private Long createBy;
-    private LocalDateTime createTime;
+    /*private Long createBy;
+    private LocalDateTime createTime;*/
     private LocalDateTime updateTime;
 
     //private Enabled enabled;
     // 使用CreateInfo代替存储
-    //private CreateInfo createInfo;
+    private CreateInfo createInfo;
 
     /**
      * 角色的权限集合

@@ -4,6 +4,7 @@ package com.example.mysql2es.mybatis.model;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @ToString
-public class SysPrivilege {
+public class SysPrivilege implements Serializable {
 
     private Long id;
     private String privilegeName;

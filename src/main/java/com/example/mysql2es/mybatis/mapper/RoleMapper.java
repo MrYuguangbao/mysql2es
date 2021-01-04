@@ -24,6 +24,8 @@ public interface RoleMapper {
 
     List<SysRole> selectAllRoleAndPrivileges();
 
+    List<SysRole> selectRoleByUserId(Long userId);
+
     List<SysRole> selectRoleByUserIdChoose(Long userId);
 
     @Results(id = "roleResultMap", value = {

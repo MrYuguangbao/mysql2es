@@ -128,7 +128,7 @@ public class RoleMapperTest extends BaseMapperTest {
             RoleMapper mapper = sqlSession.getMapper(RoleMapper.class);
             List<SysRole> sysRoles = mapper.selectRoleByUserIdChoose(1L);
             for (SysRole sysRole : sysRoles) {
-                System.out.println("角色名:" + sysRole.getRoleName());
+                System.out.println("-角色名:" + sysRole.getRoleName());
                 /*if (sysRole.getId().equals(1L)) {
                     Assert.assertNotNull(sysRole.getPrivilegeList());
                 } else if (sysRole.getId().equals(2L)) {
@@ -136,9 +136,23 @@ public class RoleMapperTest extends BaseMapperTest {
                     continue;
                 }*/
                 for (SysPrivilege sysPrivilege : sysRole.getPrivilegeList()) {
-                    System.out.println("权限名:" + sysPrivilege.getPrivilegeName());
+                    System.out.println("------权限名:" + sysPrivilege.getPrivilegeName());
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectRoleByUserId() {
+        SqlSession sqlSession = getSqlsession();
+        try {
+            RoleMapper mapper = sqlSession.getMapper(RoleMapper.class);
+            List<SysRole> sysRoles = mapper.selectRoleByUserId(1L);
+            Assert.assertNotNull(sysRoles);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

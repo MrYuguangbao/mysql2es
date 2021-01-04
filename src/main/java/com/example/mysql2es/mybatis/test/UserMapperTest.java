@@ -555,18 +555,26 @@ public class UserMapperTest extends BaseMapperTest{
     }
 
     @Test
-    public void testSelectAllUserAndRoleSelect(){
+    public void testSelectAllUserAndRole0104(){
         SqlSession sqlSession = getSqlsession();
         try {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-            SysUser sysUser = mapper.selectAllUserAndRoleSelect(1L);
-            System.out.println("用户名:" + sysUser.getUserName());
-            for (SysRole sysRole : sysUser.getRoleList()) {
-                System.out.println("---> 角色名:"+sysRole.getRoleName());
-                for (SysPrivilege sysPrivilege : sysRole.getPrivilegeList()) {
-                    System.out.println("-----> 权限名:"+sysPrivilege.getPrivilegeName());
-                }
-            }
+            SysUser sysUser = mapper.selectAllUserAndRole0104(1L);
+            System.out.println(sysUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testSelectUserAndRoleByIdCol(){
+        SqlSession sqlSession = getSqlsession();
+        try {
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            SysUser sysUser = mapper.selectUserAndRoleByIdCol(1L);
+            System.out.println(sysUser);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
