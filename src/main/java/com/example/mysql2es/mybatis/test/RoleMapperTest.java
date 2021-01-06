@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class RoleMapperTest extends BaseMapperTest {
 
-    /*@Test
+    @Test
     public void testSelectById() {
         SqlSession sqlSession = getSqlsession();
         try {
@@ -31,14 +31,14 @@ public class RoleMapperTest extends BaseMapperTest {
             SysRole sysRole = mapper.selectById(1L);
             Assert.assertEquals(Enabled.enabled, sysRole.getEnabled());
             System.out.println(sysRole);
-            sysRole.setEnabled(Enabled.disabled);
+            //sysRole.setEnabled(Enabled.disabled);
             mapper.updateById(sysRole);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             sqlSession.close();
         }
-    }*/
+    }
 
     @Test
     public void testSelectAll() {

@@ -7,6 +7,7 @@
     <settings>
         <setting name="logImpl" value="LOG4J"/>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 如果不配置二级缓存，默认值为true -->
         <setting name="cacheEnabled" value="true"/>
         <setting name="aggressiveLazyLoading" value="false"/>
     </settings>
